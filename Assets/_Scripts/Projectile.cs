@@ -22,7 +22,7 @@ public class Projectile : MonoBehaviour
         }
         set
         {
-            SetType(value);                                                // c he set clause calls the SetType() method, allowing you to do more than just set _type.
+            SetType(value);                                                // c the set clause calls the SetType() method, allowing you to do more than just set _type.
         }
     }
 

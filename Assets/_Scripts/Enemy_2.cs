@@ -17,7 +17,7 @@ public class Enemy_2 : Enemy
 
     void Start()
     {
-        Debug.Log("enemy2 spawned" + Time.time);
+        Debug.Log("enemy2 spawned" + Time.time); //places a note in console telling you if the enemy spawned on start
         // Pick any point on the left side of the screen 
         p0 = Vector3.zero;                                                   // b 
         p0.x = -bndCheck.camWidth - bndCheck.radius;
@@ -29,7 +29,7 @@ public class Enemy_2 : Enemy
         p1.y = Random.Range(-bndCheck.camHeight, bndCheck.camHeight);
 
         // Possibly swap sides 
-        if (Random.value > 0.5f)
+        if (Random.value > 0.5f) //flip a coin, make it so it's possible to swap sides on the flip so it'll spawn on the right rather than the left
         {
             // Setting the .x of each point to its negative will move it to 
             //   the other side of the screen 
@@ -58,5 +58,15 @@ public class Enemy_2 : Enemy
 
         // Interpolate the two linear interpolation points 
         pos = (1 - u) * p0 + u * p1;
+    }
+
+    private void OnDrawGizmos() //draws the trajectories of the enemies
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(p0, 1.0f);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawCube(p1, Vector3.one); //gives a vector 3 of 111
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(p0, p1);
     }
 }

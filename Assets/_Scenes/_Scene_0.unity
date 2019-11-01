@@ -415,26 +415,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabEnemies:
-  - {fileID: 1892286533060075302, guid: 35be6030b6056f34d828af07c21a73ba, type: 3}
+  - {fileID: 5141118186828634328, guid: 844e5ffa5e74e7c46bbcbd30dcad274c, type: 3}
   enemySpawnPerSecond: 0.5
   enemyDefaultPadding: 1.5
   weaponDefinitions:
   - type: 1
     letter: B
-    color: {r: 1, g: 1, b: 1, a: 0}
+    color: {r: 1, g: 1, b: 1, a: 1}
     projectilePrefab: {fileID: 3124475644231508671, guid: 715c976f86ccb9f4da076341397582b6,
       type: 3}
-    projectileColor: {r: 1, g: 1, b: 1, a: 0}
+    projectileColor: {r: 1, g: 1, b: 1, a: 1}
     damageOnHit: 1
     continuousDamage: 0
     delayBetweenShots: 0.2
     velocity: 50
   - type: 2
     letter: S
-    color: {r: 0.28555536, g: 0.8324681, b: 0.8773585, a: 0}
+    color: {r: 0.28555536, g: 0.8324681, b: 0.8773585, a: 1}
     projectilePrefab: {fileID: 3124475644231508671, guid: 715c976f86ccb9f4da076341397582b6,
       type: 3}
-    projectileColor: {r: 0.28627452, g: 0.8313726, b: 0.87843144, a: 0}
+    projectileColor: {r: 0.28627452, g: 0.8313726, b: 0.87843144, a: 1}
     damageOnHit: 1
     continuousDamage: 0
     delayBetweenShots: 0.4
@@ -811,6 +811,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7901728439777310846, guid: 821759f8badaeb64f8f4e31abc0fc404,
+        type: 3}
+      propertyPath: _type
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 821759f8badaeb64f8f4e31abc0fc404, type: 3}

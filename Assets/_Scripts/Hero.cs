@@ -24,7 +24,7 @@ public class Hero : MonoBehaviour
     // Declare a new delegate type WeaponFireDelegate 
     public delegate void WeaponFireDelegate();                               // a Though both are public, neither the WeaponFireDelegate() delegate type nor the fireDelegate field will appear in the Unity Inspector
     // Create a WeaponFireDelegate field named fireDelegate. 
-    public WeaponFireDelegate fireDelegate;
+    public WeaponFireDelegate fireDelegate;                 // allows you to save functions as a variable
 
     void Awake()
     {
@@ -36,7 +36,7 @@ public class Hero : MonoBehaviour
         {
             Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");
         }
-        fireDelegate += TempFire;                                            // b Adding TempFire to the fireDelegate causes TempFire to be called any time fireDelegate is called like a function
+       // fireDelegate += TempFire;                                            // b Adding TempFire to the fireDelegate causes TempFire to be called any time fireDelegate is called like a function
     }
 
     void Update()
@@ -69,19 +69,19 @@ public class Hero : MonoBehaviour
         }
     }
 
-    void TempFire()
-    {                                                        // b
-        GameObject projGO = Instantiate<GameObject>(projectilePrefab);
-        projGO.transform.position = transform.position;
-        Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
-        //rigidB.velocity = Vector3.up * projectileSpeed;
-                                // g 
+    //void TempFire()
+    //{                                                        // b
+    //    GameObject projGO = Instantiate<GameObject>(projectilePrefab);
+    //    projGO.transform.position = transform.position;
+    //    Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
+    //    //rigidB.velocity = Vector3.up * projectileSpeed;
+    //                            // g 
 
-            Projectile proj = projGO.GetComponent<Projectile>();                 // h 
-            proj.type = WeaponType.blaster;
-            float tSpeed = Main.GetWeaponDefinition(proj.type).velocity;
-            rigidB.velocity = Vector3.up * tSpeed;
-        }
+    //        Projectile proj = projGO.GetComponent<Projectile>();                 // h 
+    //        proj.type = WeaponType.blaster;
+    //        float tSpeed = Main.GetWeaponDefinition(proj.type).velocity;
+    //        rigidB.velocity = Vector3.up * tSpeed;
+    //    }
 
     void OnTriggerEnter(Collider other)
     {

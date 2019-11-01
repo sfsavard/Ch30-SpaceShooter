@@ -92,15 +92,6 @@ public class Main : MonoBehaviour
         //   which means it has failed to find the right WeaponDefinition 
         return (new WeaponDefinition());                                          // c If there is no entry in WEAP_DICT with the proper WeaponType key, a new WeaponDefinition with a type of WeaponType.none is returned.
     }
-                                                                                  // Start is called before the first frame update
-        void Start()
-    {
+                                                                                 
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
