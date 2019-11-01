@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public virtual void Move()
+    public virtual void Move() // virtual allows you to override a method that already exists
     {                                             // b
         Vector3 tempPos = pos;
         tempPos.y -= speed * Time.deltaTime;

@@ -17,6 +17,7 @@ public class Enemy_2 : Enemy
 
     void Start()
     {
+        Debug.Log("enemy2 spawned" + Time.time);
         // Pick any point on the left side of the screen 
         p0 = Vector3.zero;                                                   // b 
         p0.x = -bndCheck.camWidth - bndCheck.radius;
