@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     public float health = 10;
     public int score = 100;      // Points earned for destroying this
 
-    private BoundsCheck bndCheck;                                           // a
+    protected BoundsCheck bndCheck;                                           // a
 
     void Awake()
     {                                                          // b
