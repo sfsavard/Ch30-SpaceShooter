@@ -13,6 +13,7 @@ public class Hero : MonoBehaviour
     public float gameRestartDelay = 2f;
     public GameObject projectilePrefab; //asks for the prefab in inspector
     public float projectileSpeed = 40;
+    public Weapons[] weapons;                                        // a weapons array
 
     [Header("Set Dynamically")]
     [SerializeField]
@@ -120,7 +121,26 @@ public class Hero : MonoBehaviour
         {
 
             // Leave this switch block empty for now.
+            case WeaponType.shield:                                          // a If the PowerUp has the WeaponType shield, it increases the shield level by 1
+                shieldLevel++;
+                break;
 
+            default:                                                         // b Any other PowerUp WeaponType will be a weapon, so that is the default state
+                if (pu.type == weapons[0].type)
+                { // If it is the same type  // c If the PowerUp is the same WeaponType as the existing weapons, a search occurs for an unused weapon slot and an attempt is made to set that empty slot to the same weapon type. If all five slots are already in use, nothing happens
+                    Weapons w = GetEmptyWeaponSlot();
+                    if (w != null)
+                    {
+                        // Set it to pu.type
+                        w.SetType(pu.type);
+                    }
+                }
+                else
+                { // If this is a different weapon type               // d If the PowerUp is a different WeaponType, then all weapon slots are cleared, and Weapon_0 is set to the new WeaponType that was picked up
+                    ClearWeapons();
+                    weapons[0].SetType(pu.type);
+                }
+                break;
         }
         pu.AbsorbedBy(this.gameObject);
     }
@@ -141,6 +161,26 @@ public class Hero : MonoBehaviour
                 // Tell Main.S to restart the game after a delay
                 Main.S.DelayedRestart(gameRestartDelay);                 // a
             }
+        }
+    }
+
+    Weapons GetEmptyWeaponSlot()
+    {
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            if (weapons[i].type == WeaponType.none)
+            {
+                return (weapons[i]);
+            }
+        }
+        return (null);
+    }
+
+    void ClearWeapons()
+    {
+        foreach (Weapons w in weapons)
+        {
+            w.SetType(WeaponType.none);
         }
     }
 }
