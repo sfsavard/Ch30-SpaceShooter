@@ -10,11 +10,31 @@ public class Enemy : MonoBehaviour
     public float health = 10;
     public int score = 100;      // Points earned for destroying this
 
+    public float showDamageDuration = 0.1f; // # seconds to show damage // a
+
+    [Header("Set Dynamically: Enemy")]
+    public Color[] originalColors;
+    public Material[] materials;// All the Materials of this & its children
+    public bool showingDamage = false;
+    public float damageDoneTime; // Time to stop showing damage
+    public bool notifiedOfDestruction = false; // Will be used later
+
     protected BoundsCheck bndCheck;                                           // a
 
     void Awake()
     {                                                          // b
         bndCheck = GetComponent<BoundsCheck>();
+
+        // Get materials and colors for this GameObject and its children
+        materials = Utils.GetAllMaterials(gameObject);                     // b The materials array is filled using the new Utils.GetAllMaterials() method. Then, code here iterates through all the materials and stores their original color
+        // Though all of the Enemy GameObjects are currently white, this method allows you to set whatever color you want on them, colors each one red when the Enemy is damaged, and then returns them to their original color.
+        // Importantly, this call to Utils.GetAllMaterials() is made in the Awake() method, and the result is cached in materials. This ensures that it only happens once for each Enemy
+        // Utils.GetAllMaterials() makes use of GetComponentsInChildren<>(), which is a somewhat slow function that can take processing time and decrease performance. As such, it is generally better to call it once and cache the result rather than calling it every frame
+        originalColors = new Color[materials.Length];
+        for (int i = 0; i < materials.Length; i++)
+        {
+            originalColors[i] = materials[i].color;
+        }
     }
 
     // This is a Property: A method that acts like a field
@@ -33,6 +53,12 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         Move();
+
+        if (showingDamage && Time.time > damageDoneTime)
+        {                 // c If the Enemy is currently showing damage (i.e., it's red) and the current time is later than damageDoneTime, UnShowDamage() is called
+            UnShowDamage();
+        }
+
         if (bndCheck != null && !bndCheck.isOnScreen)
         {                    // c
             // Check to make sure it's gone off the bottom of the screen
@@ -66,6 +92,8 @@ public class Enemy : MonoBehaviour
                 }
 
                 // Hurt this Enemy
+                ShowDamage();                                                // d A call to ShowDamage() is added to the section of OnCollisionEnter() that damages the Enem
+
                 // Get the damage amount from the Main WEAP_DICT.
                 health -= Main.GetWeaponDefinition(p.type).damageOnHit;
                 if (health <= 0)
@@ -81,5 +109,24 @@ public class Enemy : MonoBehaviour
                 break;
 
         }
+    }
+
+    void ShowDamage()
+    {                                                      // e ShowDamage() turns all materials in the materials array red, sets showingDamage to true, and sets the time at which it should stop showing damage.
+        foreach (Material m in materials)
+        {
+            m.color = Color.red;
+        }
+        showingDamage = true;
+        damageDoneTime = Time.time + showDamageDuration;
+    }
+
+    void UnShowDamage()
+    {                                                    // f UnShowDamage() turns all materials in the materials array back to their original color and sets showingDamage to false
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i].color = originalColors[i];
+        }
+        showingDamage = false;
     }
 }
