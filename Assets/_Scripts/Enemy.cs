@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     public int score = 100;      // Points earned for destroying this
 
     public float showDamageDuration = 0.1f; // # seconds to show damage // a
+    public float powerUpDropChance = 1f;  // Chance to drop a power-up     // a powerUpDropChance determines how likely this Enemy is to drop a PowerUp when it is destroyed. A value of 0 will never drop a PowerUp, and a 1 will always drop one
 
     [Header("Set Dynamically: Enemy")]
     public Color[] originalColors;
@@ -97,10 +98,20 @@ public class Enemy : MonoBehaviour
                 // Get the damage amount from the Main WEAP_DICT.
                 health -= Main.GetWeaponDefinition(p.type).damageOnHit;
                 if (health <= 0)
-                {// d If this Enemy's health is decreased to below 0, then this Enemy is destroyed. With a default Enemy health of 10 and blaster damageOnHit of 1, this will take 10 shots
-                    // Destroy this Enemy
+                {
+                    // Tell the Main singleton that this ship was destroyed     // b Immediately before this Enemy is destroyed, it notifies the Main singleton by calling ShipDestroyed(). This only happens once for each ship, which is enforced by the notifiedOfDestruction bool
+                    if (!notifiedOfDestruction)
+                    {
+                        Main.S.shipDestroyed(this);
+                    }
+                    notifiedOfDestruction = true;
+                    // Destroy this Enemy 
                     Destroy(this.gameObject);
                 }
+                // d If this Enemy's health is decreased to below 0, then this Enemy is destroyed. With a default Enemy health of 10 and blaster damageOnHit of 1, this will take 10 shots
+                // Destroy this Enemy
+                //Destroy(this.gameObject);
+                //}
                 Destroy(otherGO);                                          // e The Projectile GameObject is destroyed
                 break;
 

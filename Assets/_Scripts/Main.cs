@@ -14,10 +14,36 @@ public class Main : MonoBehaviour
     public float enemySpawnPerSecond = 0.5f; // # Enemies/second
     public float enemyDefaultPadding = 1.5f; // Padding for position
     public WeaponDefinition[] weaponDefinitions;
+    public GameObject prefabPowerUp;                             // a This will hold the prefab for all PowerUps
+    public WeaponType[] powerUpFrequency = new WeaponType[] {      // b This powerUpFrequency array of WeaponTypes determines how often each type of PowerUp will be created. By default, it has two blasters, one spread, and one shield, so the blaster power-up will be twice as common as the others
+                                    WeaponType.blaster, WeaponType.blaster,
+                                    WeaponType.spread,  WeaponType.shield };
 
     private BoundsCheck bndCheck;
 
-    void Awake()
+    public void shipDestroyed(Enemy e)
+    {                                   // c The ShipDestroyed() method will be called by an Enemy ship whenever it is destroyed. It sometimes creates a power-up in place of the destroyed ship
+        // Potentially generate a PowerUp 
+        if (Random.value <= e.powerUpDropChance)
+        {                           // d Each type of ship will have a powerUpDropChance, which is a number between 0 and 1. Random.value is a property that generates a random float between 0 (inclusive) and 1 (inclusive). (Because Random.value is inclusive of both 0 and 1, the number could potentially be either 0 or 1.)
+                                    // If that number is less than or equal to the powerUpDropChance, a PowerUp is instantiated. The drop chance is part of the Enemy class so that various enemies can have higher or lower chances of dropping a PowerUp (e.g., Enemy_0 could rarely drop one, whereas Enemy_4 could always drop one).
+                                    // Choose which PowerUp to pick 
+                                    // Pick one from the possibilities in powerUpFrequency
+            int ndx = Random.Range(0, powerUpFrequency.Length);               // e This line makes use of the powerUpFrequency array. When Random.Range() is called with two integer values, it chooses a number between the first number (inclusive) and the second number (exclusive)
+            WeaponType puType = powerUpFrequency[ndx];
+
+            // Spawn a PowerUp 
+            GameObject go = Instantiate(prefabPowerUp) as GameObject;
+            PowerUp pu = go.GetComponent<PowerUp>();
+            // Set it to the proper WeaponType 
+            pu.SetType(puType);                                            // f After a power-up type has been selected, the SetType() method is called on the instantiated PowerUp, and the PowerUp then handles coloring itself, setting its _type, and displaying the correct letter in its letter TextMesh
+
+            // Set it to the position of the destroyed ship 
+            pu.transform.position = e.transform.position;
+        }
+    }
+
+            void Awake()
     {
         S = this;
         // Set bndCheck to reference the BoundsCheck component on this GameObject
