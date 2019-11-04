@@ -102,10 +102,27 @@ public class Hero : MonoBehaviour
             shieldLevel--;        // Decrease the level of the shield by 1
             Destroy(go);          // … and Destroy the enemy                 // e
         }
+        else if (go.tag == "PowerUp")
+        {
+            // If the shield was triggered by a PowerUp
+            AbsorbPowerUp(go);
+        }
         else
         {
             print("Triggered by non-Enemy: " + go.name);                      // f
         }
+    }
+
+    public void AbsorbPowerUp(GameObject go)
+    {
+        PowerUp pu = go.GetComponent<PowerUp>();
+        switch (pu.type)
+        {
+
+            // Leave this switch block empty for now.
+
+        }
+        pu.AbsorbedBy(this.gameObject);
     }
 
     public float shieldLevel
